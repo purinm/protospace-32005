@@ -1,7 +1,8 @@
 class PrototypesController < ApplicationController
   
   before_action :authenticate_user! ,except: [:index,:show]
-  before_action :set_prototype, only: [:edit, :show]
+  before_action :set_prototype, only: [:edit,:show]
+  
   
   def index
     @prototypes = Prototype.includes(:user)
@@ -26,8 +27,8 @@ class PrototypesController < ApplicationController
   end
 
   def edit 
-    unless user_signed_in?
-    redirect_to action: :index
+    unless user_signed_in? && @prototype.user_id == current_user.id 
+      redirect_to action: :index
     end
   end
   
